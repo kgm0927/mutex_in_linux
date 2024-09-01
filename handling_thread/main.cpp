@@ -6,7 +6,14 @@
 using namespace std;
 
 #define END 1000
+
 int num=0;
+
+typedef struct mutex_and_int{
+    int i;
+    using_pthread* um;
+};
+
 int breaking(using_mutex& um){
     if(num>=END){
         um.Finish_lock();
@@ -14,75 +21,67 @@ int breaking(using_mutex& um){
     }
     return 0;
 }
-void* func10(void* um)
-{
+
+void* func10(void* um){
+    mutex_and_int* t_um=(mutex_and_int*)um;
+    for(;;){
+       t_um->um.
+        if(-1==breaking(*t_um)){
+            break;
+        }
+        num+=10;
+    cout<<"10 추가:"<<num<<endl;
+    t_um->Finish_lock();
+    }
+    return nullptr;
+}
+
+void* func5(void* um){
     using_mutex* t_um=(using_mutex*)um;
     for(;;){
-    t_um->Start_lock();
-   if( -1==breaking(*t_um)){
-    break;
-   }
-    num+=10;
-cout<<"10 추가:"<<num<<endl;
+        t_um->Start_lock();
+        if(-1==breaking(*t_um)){
+            break;
+        }
+        num+=5;
+        cout<<"5 추가:"<<num<<endl;
+        t_um->Finish_lock();
 
-t_um->Finish_lock();
-}
-}
-
-void* func5(void * um)
-{
-    using_mutex* t_um=(using_mutex*)um;
-
-   for(;;){ t_um->Start_lock();
-    num+=5;
-        if( -1==breaking(*t_um)){
-    break;
-   }
-    cout<<"5 추가:"<<num<<endl;
-    
-t_um->Finish_lock();}
+    }
+    return nullptr;
 }
 
 void* func1(void* um){
-        using_mutex* t_um=(using_mutex*)um;
-
+    using_mutex* t_um=(using_mutex*)um;
     for(;;){
         t_um->Start_lock();
-       if( -1==breaking(*t_um)){
-    break;
-   }
-    num+=1;
-    cout<<"1 추가:"<<num<<endl;
-    t_um->Finish_lock();}
+        if(-1==breaking(*t_um)){
+            break;
+        }
+        num+=1;
+        cout<<"1 추가:"<<num<<endl;
+        t_um->Finish_lock();
+    }
+    return nullptr;
 }
-
 
 int main(){
     using_mutex um(10);
-    int start=0;
-           
-    pthread_t pth1,pth2,pth3;
-    
+    mutex_and_int mai;
 
-    pthread_attr_init(&um.attr);
-    pthread_create(
-        &pth1,&um.attr,func10,(void*)&um
-    );
-    pthread_create(
-        &pth2,&um.attr,func5,(void*)&um
-    ); 
-    pthread_create(
-        &pth3,&um.attr,func1,(void*)&um
-    );
-        
+    mai.um=um.returning_pthread();
 
-        
-            pthread_join(pth1,NULL);
-            pthread_join(pth2,NULL);
-            pthread_join(pth3,NULL);
-        
-        
-    
-    um.~using_mutex();
-     
+
+    um.create_threads(func10,(void*)&mai);
+    um.create_threads(func5,(void*)&mai);
+    um.create_threads(func1,(void*)&mai);
+
+
+
+    pthread_join(pth1, NULL);
+    pthread_join(pth2, NULL);
+    pthread_join(pth3, NULL);
+
+    // um.~using_mutex(); // 생략 가능
+    return 0;
 }
