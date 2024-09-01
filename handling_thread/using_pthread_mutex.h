@@ -5,6 +5,9 @@
 #include <cstdarg>
 #define NUM_THREADS 100
 
+using namespace std;
+
+
 typedef struct using_pthread{
     pthread_mutex_t cm;
     pthread_cond_t cv;
@@ -14,7 +17,7 @@ typedef struct using_pthread{
 
 class using_mutex{
     public:
-    pthread_t thread[NUM_THREADS]; // 제일 첫번째는 1로 시작한다.
+    pthread_t thread[NUM_THREADS]; // 제일 첫번째는 1로 시작한다. //0 번째 칸은 빈칸.
     int cnt_thread;
     pthread_attr_t attr;
     
@@ -22,8 +25,8 @@ class using_mutex{
     using_pthread up;
     int numThreads;
 
-   using_pthread* returning_pthread(){
-        return&up;
+   using_mutex* returning_pthread(){
+        return this;
     }
 
 

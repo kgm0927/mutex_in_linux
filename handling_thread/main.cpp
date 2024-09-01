@@ -11,7 +11,7 @@ int num=0;
 
 typedef struct mutex_and_int{
     int i;
-    using_pthread* um;
+    using_mutex* um;
 };
 
 int breaking(using_mutex& um){
@@ -23,44 +23,45 @@ int breaking(using_mutex& um){
 }
 
 void* func10(void* um){
-    mutex_and_int* t_um=(mutex_and_int*)um;
+    mutex_and_int* tmp_m=(mutex_and_int*)um;
+
     for(;;){
-       t_um->um.
-        if(-1==breaking(*t_um)){
+       tmp_m->um->Finish_lock();
+        if(-1==breaking(*tmp_m->um)){
             break;
         }
         num+=10;
     cout<<"10 추가:"<<num<<endl;
-    t_um->Finish_lock();
+    tmp_m->um->Finish_lock();
     }
     return nullptr;
 }
 
 void* func5(void* um){
-    using_mutex* t_um=(using_mutex*)um;
+    mutex_and_int* tmp_m=(mutex_and_int*)um;
     for(;;){
-        t_um->Start_lock();
-        if(-1==breaking(*t_um)){
+       tmp_m->um->Finish_lock();
+        if(-1==breaking(*tmp_m->um)){
             break;
         }
         num+=5;
         cout<<"5 추가:"<<num<<endl;
-        t_um->Finish_lock();
+        tmp_m->um->Finish_lock();
 
     }
     return nullptr;
 }
 
 void* func1(void* um){
-    using_mutex* t_um=(using_mutex*)um;
+    mutex_and_int* tmp_m=(mutex_and_int*)um;
     for(;;){
-        t_um->Start_lock();
-        if(-1==breaking(*t_um)){
+        tmp_m->um->Start_lock();
+        if(-1==breaking(*tmp_m->um)){
             break;
         }
         num+=1;
         cout<<"1 추가:"<<num<<endl;
-        t_um->Finish_lock();
+        tmp_m->um->Finish_lock();
     }
     return nullptr;
 }
@@ -78,9 +79,6 @@ int main(){
 
 
 
-    pthread_join(pth1, NULL);
-    pthread_join(pth2, NULL);
-    pthread_join(pth3, NULL);
 
     // um.~using_mutex(); // 생략 가능
     return 0;
