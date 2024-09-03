@@ -2,14 +2,16 @@
 #include <pthread.h>
 #include <semaphore.h>
 #include <random>
-
+#include <cstdlib>
+#include <time.h>
+#include <unistd.h>
 #define SEM_N 100
 
 using namespace std;
 
 typedef struct set_sema_and_thread{
-    pthread_t pth;
-    sem_t sema;
+    pthread_t* pth;
+    sem_t* sema;
     void* (*func)(void*);
     void* structure;
     
@@ -24,21 +26,21 @@ private:
     pthread_mutex_t critical_section;
     int amount_of_sema;
 
-void setting_First_sema_th(pthread_t pth,sem_t sema,void* (*func)(void*),void* func_para){
+void setting_First_sema_th(void* (*func)(void*),void* func_para){ // 배열 중 첫 번째 스레드를 채워 넣음.
     if(amount_of_sema==0)
    { 
-    this->sst[amount_of_sema].pth=pth;
-    this->sst[amount_of_sema].sema=sema;
+    this->sst[amount_of_sema].pth=new pthread_t;
+    this->sst[amount_of_sema].sema=new sem_t;
     this->sst[amount_of_sema].func=func;
     this->sst[amount_of_sema].structure=func_para;
-    sem_init(&this->sst[amount_of_sema].sema,0,SEM_N);
+    sem_init(this->sst[amount_of_sema].sema,0,SEM_N);
     amount_of_sema++;
     }
 
     else{
         cout<<"첫 번째 스레드가 이미 있음"<<endl;
 
-        Setting_rest_sema_th(pth,sema,func,func_para);
+        Setting_rest_sema_th(func,func_para);
 
 
     }
@@ -46,30 +48,34 @@ void setting_First_sema_th(pthread_t pth,sem_t sema,void* (*func)(void*),void* f
     
 public:
 
-    pthread_mutex_t* return_mutex(){
-        return &critical_section;
+    int amount_of_thread(){
+        return amount_of_sema;
     }
 
-    pthread_t& return_pth(int index){
-        return this->sst[index].pth;
+    pthread_mutex_t& return_mutex(){ // 뮤텍스를 반환
+        return critical_section;
     }
 
-    sem_t& return_sema(int index){
-        return this->sst[index].sema;
+    pthread_t& return_pth(int index){ // 특정 배열 위치의 스레드의 참조를 반환
+        return *this->sst[index].pth;
     }
 
-    void* return_structure(int index){
+    sem_t& return_sema(int index){ // 특정 위치의 세마포어 참조를 반환.
+        return *this->sst[index].sema;
+    }
+
+    void* return_structure(int index){// 함수의 파라미터로 쓰일 포인터를 반환
         return &this->sst[index].structure;
     }
 
- void* (*(&return_func(int index)))(void*) {
+ void* (*(&return_func(int index)))(void*) { // 특정 위치의 함수를 반환 반드시 void* 타입
     // static으로 선언된 함수 포인터 배열
     return this->sst[index].func;
 }
     
 
-    busy_semaphore* return_self(){
-        return this;
+    busy_semaphore& return_self(){ // 인스턴스 자체를 반환.
+        return *this;
     }
 
 
@@ -78,30 +84,44 @@ public:
         pthread_mutex_init(&critical_section,NULL);
     }
 
-    busy_semaphore(pthread_t pth,sem_t sema,void* (*func)(void*),void* func_para){
+    busy_semaphore(void* (*func)(void*),void* func_para){
         amount_of_sema=0;
-        setting_First_sema_th(pth, sema,func,func_para);
+        setting_First_sema_th(func,func_para);
         pthread_mutex_init(&critical_section,NULL);
 }
 
 
     ~busy_semaphore(){
+        for (int i = 0; i < amount_of_sema; i++)
+        {
+            pthread_join(*this->sst[amount_of_sema].pth,NULL);
+            sem_destroy(this->sst[amount_of_sema].sema);
 
+            delete this->sst[amount_of_sema].pth;
+            delete this->sst[amount_of_sema].sema;
+
+            this->sst[amount_of_sema].func=NULL;
+            this->sst[amount_of_sema].structure=NULL;
+        }
+
+        pthread_mutex_destroy(&critical_section);
+        
     }
 
-void Setting_rest_sema_th(pthread_t pth,sem_t sema,void* (*func)(void*),void* func_para){
+void Setting_rest_sema_th(void* (*func)(void*),void* func_para){
 
     if(amount_of_sema!=0){
     
-    this->sst[amount_of_sema].pth=pth;
-    this->sst[amount_of_sema].sema=sema;
+    this->sst[amount_of_sema].pth=new pthread_t;
+    this->sst[amount_of_sema].sema=new sem_t;
     this->sst[amount_of_sema].func=func;
-    sem_init(&this->sst[amount_of_sema].sema,0,SEM_N);
+    this->sst[amount_of_sema].structure=func_para;
+    sem_init(this->sst[amount_of_sema].sema,0,SEM_N);
     amount_of_sema++;
 
     }else{
         cout<<"스레드가 채워져 있지 않음"<<endl;
-        setting_First_sema_th(pth,sema,func,func_para);
+        setting_First_sema_th(func,func_para);
     }
 }
 
@@ -117,37 +137,51 @@ void randoming(){
     std::random_device rd;
     mt19937 gen(rd());
 
-    uniform_real_distribution<int> dis(0,100);
+    uniform_real_distribution<float> dis(0,amount_of_thread()-1);
 
     start_thread_index=dis(gen);
     
 }
 
 
-static void* using_thread(void* i){
-sem_wait(&return_sema(start_thread_index));
+ static void* using_thread(void* arg){
 
 
-pthread_mutex_lock(return_mutex());
+auto* instance=static_cast<using_semaphore_func*>(arg);
+sem_wait(&instance->return_sema(instance->start_thread_index));
 
-void *(*func)(void*)=return_func(start_thread_index);
-func(return_structure(start_thread_index));
 
-pthread_mutex_unlock(return_mutex());
+while(true){
+pthread_mutex_lock(&instance->return_mutex());
 
-randoming();
-sem_post(&return_sema(start_thread_index));
+void* (*func)(void*)=instance->return_func(instance->start_thread_index);
+func(instance->return_structure(instance->start_thread_index));
+sleep(100);
+
+
+pthread_mutex_unlock(&instance->return_mutex());
+}
+
+
+instance->randoming();
+sem_post(&instance->return_sema(instance->start_thread_index));
+
+return NULL;
+
 }
 
 
 public:
 
-    using_semaphore_func(){
 
-    }
+using_semaphore_func():busy_semaphore(){}
+
+using_semaphore_func(void* (*func)(void*),void* func_para)
+:busy_semaphore(func,func_para){}
+
 
     void Start_thread(){
-        pthread_create(&return_pth(start_thread_index),NULL,using_thread,NULL);
+        pthread_create(&return_pth( start_thread_index),NULL,using_thread,this);
     }
 
 
