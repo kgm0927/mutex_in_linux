@@ -9,6 +9,10 @@
 
 using namespace std;
 
+
+// 잠시 보류
+
+
 typedef struct set_sema_and_thread{
     pthread_t* pth;
     sem_t* sema;
@@ -22,7 +26,6 @@ class busy_semaphore
 {
 private:
     set_sema_and_thread sst[SEM_N];
-
     pthread_mutex_t critical_section;
     int amount_of_sema;
 
@@ -56,12 +59,12 @@ public:
         return critical_section;
     }
 
-    pthread_t& return_pth(int index){ // 특정 배열 위치의 스레드의 참조를 반환
-        return *this->sst[index].pth;
+    pthread_t* return_pth(int index){ // 특정 배열 위치의 스레드의 참조를 반환
+        return this->sst[index].pth;
     }
 
-    sem_t& return_sema(int index){ // 특정 위치의 세마포어 참조를 반환.
-        return *this->sst[index].sema;
+    sem_t* return_sema(int index){ // 특정 위치의 세마포어 참조를 반환.
+        return this->sst[index].sema;
     }
 
     void* return_structure(int index){// 함수의 파라미터로 쓰일 포인터를 반환
@@ -92,16 +95,16 @@ public:
 
 
     ~busy_semaphore(){
-        for (int i = 0; i < amount_of_sema; i++)
+        for (int i = 0; i < amount_of_sema-1; i++)
         {
-            pthread_join(*this->sst[amount_of_sema].pth,NULL);
-            sem_destroy(this->sst[amount_of_sema].sema);
+            pthread_join(*this->sst[i].pth,NULL);
+            sem_destroy(this->sst[i].sema);
 
-            delete this->sst[amount_of_sema].pth;
-            delete this->sst[amount_of_sema].sema;
+            delete this->sst[i].pth;
+            delete this->sst[i].sema;
 
-            this->sst[amount_of_sema].func=NULL;
-            this->sst[amount_of_sema].structure=NULL;
+            this->sst[i].func=NULL;
+            this->sst[i].structure=NULL;
         }
 
         pthread_mutex_destroy(&critical_section);
@@ -137,7 +140,7 @@ void randoming(){
     std::random_device rd;
     mt19937 gen(rd());
 
-    uniform_real_distribution<float> dis(0,amount_of_thread()-1);
+    uniform_real_distribution<> dis(0,amount_of_thread()-1);
 
     start_thread_index=dis(gen);
     
@@ -148,23 +151,24 @@ void randoming(){
 
 
 auto* instance=static_cast<using_semaphore_func*>(arg);
-sem_wait(&instance->return_sema(instance->start_thread_index));
+sem_wait(instance->return_sema(instance->start_thread_index));
+void* (*func)(void*) = instance->return_func(instance->start_thread_index);
+
+ while (true) {
+            pthread_mutex_lock(&instance->return_mutex());
 
 
-while(true){
-pthread_mutex_lock(&instance->return_mutex());
+            func(instance->return_structure(instance->start_thread_index));
 
-void* (*func)(void*)=instance->return_func(instance->start_thread_index);
-func(instance->return_structure(instance->start_thread_index));
-sleep(100);
+            pthread_mutex_unlock(&instance->return_mutex());
 
-
-pthread_mutex_unlock(&instance->return_mutex());
+ 
+break;
+           
 }
-
-
-instance->randoming();
-sem_post(&instance->return_sema(instance->start_thread_index));
+  instance->randoming();
+            sem_post(instance->return_sema(instance->start_thread_index));
+         
 
 return NULL;
 
@@ -174,14 +178,20 @@ return NULL;
 public:
 
 
-using_semaphore_func():busy_semaphore(){}
+using_semaphore_func():busy_semaphore(){
+    this->start_thread_index=0;
+}
 
 using_semaphore_func(void* (*func)(void*),void* func_para)
-:busy_semaphore(func,func_para){}
+:busy_semaphore(func,func_para){
+        this->start_thread_index=0;
+
+}
 
 
     void Start_thread(){
-        pthread_create(&return_pth( start_thread_index),NULL,using_thread,this);
+        pthread_create(return_pth( start_thread_index),NULL,using_thread,this);
+        this->start_thread_index++;
     }
 
 

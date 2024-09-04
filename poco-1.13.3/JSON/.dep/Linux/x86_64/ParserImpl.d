@@ -1,0 +1,56 @@
+/home/kali/Documents/GitHub/poco-1.13.3/JSON/obj/Linux/x86_64/debug_static/ParserImpl.o /home/kali/Documents/GitHub/poco-1.13.3/JSON/obj/Linux/x86_64/release_static/ParserImpl.o /home/kali/Documents/GitHub/poco-1.13.3/JSON/obj/Linux/x86_64/debug_shared/ParserImpl.o /home/kali/Documents/GitHub/poco-1.13.3/JSON/obj/Linux/x86_64/release_shared/ParserImpl.o: src/ParserImpl.cpp include/Poco/JSON/Parser.h \
+ include/Poco/JSON/JSON.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/Foundation.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/Config.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/Platform.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/Platform_POSIX.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/Alignment.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/Bugcheck.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/Types.h \
+ include/Poco/JSON/ParserImpl.h include/Poco/JSON/Object.h \
+ include/Poco/JSON/Array.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/SharedPtr.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/Exception.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/AtomicCounter.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/Dynamic/Var.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/Format.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/Any.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/MetaProgramming.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/OrderedMap.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/ordered_hash.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/ordered_map.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/ordered_hash.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/OrderedSet.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/ordered_set.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/Dynamic/VarHolder.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/NumberFormatter.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/NumericString.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/Buffer.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/FPEnvironment.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/FPEnvironment_C99.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/NumberParser.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/DateTime.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/Timestamp.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/Timespan.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/LocalDateTime.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/DateTimeFormat.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/DateTimeFormatter.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/DateTimeParser.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/String.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/Ascii.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/UnicodeConverter.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/UTFString.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/UTF8String.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/UUID.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/Dynamic/VarIterator.h \
+ include/Poco/JSON/Stringifier.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/JSONString.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/Dynamic/Struct.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/Nullable.h \
+ include/Poco/JSON/ParseHandler.h include/Poco/JSON/Handler.h \
+ include/Poco/JSON/JSONException.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/UTF8Encoding.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/TextEncoding.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/Token.h \
+ /home/kali/Documents/GitHub/poco-1.13.3/Foundation/include/Poco/StreamCopier.h \
+ src/pdjson.h

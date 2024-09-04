@@ -1,0 +1,2 @@
+/home/kali/Documents/GitHub/poco-1.13.3/Foundation/obj/Linux/x86_64/debug_static/inflate.o /home/kali/Documents/GitHub/poco-1.13.3/Foundation/obj/Linux/x86_64/release_static/inflate.o /home/kali/Documents/GitHub/poco-1.13.3/Foundation/obj/Linux/x86_64/debug_shared/inflate.o /home/kali/Documents/GitHub/poco-1.13.3/Foundation/obj/Linux/x86_64/release_shared/inflate.o: src/inflate.c src/zutil.h src/zlib.h src/zconf.h \
+ src/inftrees.h src/inflate.h src/inffast.h src/inffixed.h

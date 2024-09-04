@@ -1,0 +1,1 @@
+/home/kali/Documents/GitHub/poco-1.13.3/JSON/obj/Linux/x86_64/debug_static/pdjson.o /home/kali/Documents/GitHub/poco-1.13.3/JSON/obj/Linux/x86_64/release_static/pdjson.o /home/kali/Documents/GitHub/poco-1.13.3/JSON/obj/Linux/x86_64/debug_shared/pdjson.o /home/kali/Documents/GitHub/poco-1.13.3/JSON/obj/Linux/x86_64/release_shared/pdjson.o: src/pdjson.c src/pdjson.h

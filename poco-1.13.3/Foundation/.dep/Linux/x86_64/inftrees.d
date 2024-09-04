@@ -1,0 +1,2 @@
+/home/kali/Documents/GitHub/poco-1.13.3/Foundation/obj/Linux/x86_64/debug_static/inftrees.o /home/kali/Documents/GitHub/poco-1.13.3/Foundation/obj/Linux/x86_64/release_static/inftrees.o /home/kali/Documents/GitHub/poco-1.13.3/Foundation/obj/Linux/x86_64/debug_shared/inftrees.o /home/kali/Documents/GitHub/poco-1.13.3/Foundation/obj/Linux/x86_64/release_shared/inftrees.o: src/inftrees.c src/zutil.h src/zlib.h src/zconf.h \
+ src/inftrees.h
